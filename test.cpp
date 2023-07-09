@@ -102,7 +102,6 @@ class Screen
          */
         void show_fps(std::chrono::_V2::steady_clock::time_point frame_start_time, std::chrono::_V2::steady_clock::time_point frame_end_time)
         {
-            //using milliseconds = std::chrono::duration<double, std::milli>;
             using microseconds = std::chrono::duration<double, std::micro>;
             char st[6]; // 6 length string, can hold up to 999,999 frames ~2 days
             sprintf(st, "%d", frame);
