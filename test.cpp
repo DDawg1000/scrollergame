@@ -7,6 +7,8 @@ class Screen
 {
     private:
         char buffer[20][80];
+        const int SCREEN_WIDTH = 80;
+        const int SCREEN_HEIGHT = 20;
 
     public:
         //Screen()
@@ -21,30 +23,30 @@ class Screen
         {
             // First row
             buffer[0][0] = '*';
-            for (int i = 77; i >= 0; --i)
+            for (int i = SCREEN_WIDTH - 3; i >= 0; --i)
             {
                 buffer[0][i+1] = '-';
             }
-            buffer[0][79] = '*';
+            buffer[0][SCREEN_WIDTH - 1] = '*';
 
             // Middle 17 rows
-            for (int row = 18; row >= 1; --row)
+            for (int row = SCREEN_HEIGHT - 2; row >= 1; --row)
             {
                 buffer[row][0] = '|';
-                for (int col = 78; col >= 1; --col)
+                for (int col = SCREEN_WIDTH - 2; col >= 1; --col)
                 {
                     //board[row][col] = ' '; // Can set inside row/col here
                 }
-                buffer[row][79] = '|';
+                buffer[row][SCREEN_WIDTH - 1] = '|';
             }
 
             // Bottom row
-            buffer[19][0] = '*';
-            for (int i = 77; i >= 0; --i)
+            buffer[SCREEN_HEIGHT - 1][0] = '*';
+            for (int i = SCREEN_WIDTH - 3; i >= 0; --i)
             {
-                buffer[19][i+1] = '-';
+                buffer[SCREEN_HEIGHT - 1][i+1] = '-';
             }
-            buffer[19][79] = '*';
+            buffer[SCREEN_HEIGHT - 1][SCREEN_WIDTH - 1] = '*';
         }
 
         /*
@@ -52,9 +54,9 @@ class Screen
         */
         void draw_screen_buffer()
         {
-            for (int i = 19; i >= 0; --i) // Draw the entire buffer to the screen
+            for (int i = SCREEN_HEIGHT - 1; i >= 0; --i) // Draw the entire buffer to the screen
             {
-                for (int j = 79; j >= 0; --j)
+                for (int j = SCREEN_WIDTH - 1; j >= 0; --j)
                 {
                     mvaddch(i, j, buffer[i][j]);
                 }
@@ -70,9 +72,9 @@ class Screen
 
             animate = animate % 4;
 
-            for (int i = 18; i >= 1; --i)
+            for (int i = SCREEN_HEIGHT - 2; i >= 1; --i)
             {
-                for (int j = 78; j >= 1; --j)
+                for (int j = SCREEN_WIDTH - 2; j >= 1; --j)
                 {
                     buffer[i][j] = chars[j % (animate + 1)];
                 }
