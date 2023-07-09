@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const int FPS = 6;
+const int FPS = 12;
 const int FPS_MULTIPLIER = 60 / FPS;
 
 class Screen
@@ -102,17 +102,17 @@ class Screen
          */
         void show_fps(std::chrono::_V2::steady_clock::time_point frame_start_time, std::chrono::_V2::steady_clock::time_point frame_end_time)
         {
-            using milliseconds = std::chrono::duration<double, std::milli>;
-            
+            //using milliseconds = std::chrono::duration<double, std::milli>;
+            using microseconds = std::chrono::duration<double, std::micro>;
             char st[6]; // 6 length string, can hold up to 999,999 frames ~2 days
             sprintf(st, "%d", frame);
             mvaddstr(30, 29, "Frames: ");
             mvaddstr(30, 37, st);
 
-            milliseconds frame_time_mseconds = frame_end_time - frame_start_time;
+            microseconds frame_time_mseconds = frame_end_time - frame_start_time;
             double frame_time = frame_time_mseconds.count();
             char ft[15];
-            sprintf(ft, "%f", -1 / (frame_time * 1000));
+            sprintf(ft, "%f", -1 / (frame_time));
             mvaddstr(31, 29, "FPS: ");
             mvaddstr(31, 37, ft);
         }
@@ -180,7 +180,7 @@ int main(int argc, char ** argv)
 
     // New screen object
     Screen s;
-    
+
     // Start the game loop
     s.game_loop(debug);
 
