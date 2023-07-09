@@ -3,12 +3,16 @@
 
 using namespace std;
 
+const int FPS = 6;
+const int FPS_MULTIPLIER = 60 / FPS;
+
 class Screen
 {
     private:
         char buffer[20][80];
         const int SCREEN_WIDTH = 80;
         const int SCREEN_HEIGHT = 20;
+
 
     public:
         //Screen()
@@ -23,9 +27,9 @@ class Screen
         {
             // First row
             buffer[0][0] = '*';
-            for (int i = SCREEN_WIDTH - 3; i >= 0; --i)
+            for (int col = SCREEN_WIDTH - 3; col >= 0; --col)
             {
-                buffer[0][i+1] = '-';
+                buffer[0][col+1] = '-';
             }
             buffer[0][SCREEN_WIDTH - 1] = '*';
 
@@ -42,9 +46,9 @@ class Screen
 
             // Bottom row
             buffer[SCREEN_HEIGHT - 1][0] = '*';
-            for (int i = SCREEN_WIDTH - 3; i >= 0; --i)
+            for (int col = SCREEN_WIDTH - 3; col >= 0; --col)
             {
-                buffer[SCREEN_HEIGHT - 1][i+1] = '-';
+                buffer[SCREEN_HEIGHT - 1][col+1] = '-';
             }
             buffer[SCREEN_HEIGHT - 1][SCREEN_WIDTH - 1] = '*';
         }
@@ -54,11 +58,11 @@ class Screen
         */
         void draw_screen_buffer()
         {
-            for (int i = SCREEN_HEIGHT - 1; i >= 0; --i) // Draw the entire buffer to the screen
+            for (int row = SCREEN_HEIGHT - 1; row >= 0; --row) // Draw the entire buffer to the screen
             {
-                for (int j = SCREEN_WIDTH - 1; j >= 0; --j)
+                for (int col = SCREEN_WIDTH - 1; col >= 0; --col)
                 {
-                    mvaddch(i, j, buffer[i][j]);
+                    mvaddch(row, col, buffer[row][col]);
                 }
             }
         }
@@ -99,6 +103,7 @@ int main(int argc, char ** argv)
     
     int frame = 0;
 
+    // Game logic loop
     while (true)
     {
         // Draw on the buffer
@@ -107,14 +112,17 @@ int main(int argc, char ** argv)
         // Add the border
         s.add_border();
 
-        // refreshes the screen
+        // Draw the buffer onto the actual screen
         s.draw_screen_buffer();
+        // Move cursor off the frame
+        move(30, 100);
+        // Refresh the screen
         refresh();
 
         ++frame;
 
         // pause for enough microseconds to be 6fps (change second number to be divisor of 60)
-        usleep(16667 * 10);
+        usleep(16667 * FPS_MULTIPLIER);
     }
 
     // deallocates memory and ends ncurses
